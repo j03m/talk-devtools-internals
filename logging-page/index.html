@@ -18,9 +18,19 @@
 <h4>Messages</h4>
 
 <input type="text" id="box"></input>
+<BR />
 <input type="button" id="localButton" value="Add Local Text"></button>
 <BR />
-<input type="button" id="remoteButton" value="Add Remote Text"></button>
+<input type="button" id="timer" value="Timer"></button>
+<BR />
+<input type="button" id="badEventGoneBad" value="Ruh oh - this could take a while (local loop)"></button>
+<BR />
+<input type="button" id="httpShort" value="http"></button>
+<BR />
+<input type="button" id="httpMed" value="http long"></button>
+<BR />
+<input type="button" id="httpLong" value="http realllly slooooow"></button>
+
 
 <ul id="log">
   <li>hello world</li>
@@ -47,22 +57,39 @@ $(document).on('ready', function(){
 		append($('#box').val())
 	});
 
-    $('#remoteButton').on('click', function(){
-        console.log('remote click!');
+    $('#badEventGoneBad').on('click', function(){
+        for(var i=0;i<25000;i++){
+            console.log(i);
+        }
+    });
 
-        $(function(){
-            $.ajax({
-                url: 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=' + $('#box').val() +'&callback=myjsonpfunction',
-                type:"GET",
-                dataType: 'jsonp',
-                jsonp: 'myjsonpfunction',
-                async:'true',
-                success:function (data) {
-
-                }
-            });
+    $('#httpShort').on('click', function(){
+        console.log('httpShort click!');
+        $.getJSON( "short", function( data ) {
+            append(data.hi);
         });
+    });
 
+    $('#httpMed').on('click', function(){
+        console.log('httpMed click!');
+        $.getJSON( "med", function( data ) {
+            append(data.hi);
+        });
+    });
+
+    $('#httpLong').on('click', function(){
+        console.log('httpLong click!');
+        $.getJSON( "long", function( data ) {
+            append(data.hi);
+        });
+    });
+
+    $('#timer').on('click', function(){
+        console.log('timer click!');
+
+        setTimeout(function(){
+            append($('#box').val());
+        }, 500);
     });
 
 });

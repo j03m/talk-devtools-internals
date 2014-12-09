@@ -231,7 +231,21 @@ And so our TracingModel is populated with events from the backend yay. So...but 
 
 Well let's get to it - first how do things get rendered? Well, _onTracingComplete in our Timeline Model seems like a good candidate there.
 
-When we call _onTracingComplete we almost immediately make a call back to tracingModel.tracingComplete which operates on our data. _tracingComplete seems to do 3 things:
+What is a meta event vs an event vs an async event vs a nested async event?
+
+What does process thread events do?
+
+    this._inspectedTargetEvents.sort(WebInspector.TracingModel.Event.compareStartTime);
+
+        this._cpuProfiles = null;
+        this._buildTimelineRecords();
+        this._buildGPUTasks();
+        this._insertFirstPaintEvent();
+        this._resetProcessingState();
+
+        this.dispatchEventToListeners(WebInspector.TimelineModel.Events.RecordingStopped);
+
+        What happens here?
 
 
 
