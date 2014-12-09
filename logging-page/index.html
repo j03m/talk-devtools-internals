@@ -1,0 +1,72 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js">
+</script>
+<style type="text/css">
+#log {
+  list-style: none;
+  padding: 0;
+}
+
+#log li {
+  font-family: monospace;
+  white-space: pre;
+}
+</style>
+</head>
+<body>
+<h4>Messages</h4>
+
+<input type="text" id="box"></input>
+<input type="button" id="localButton" value="Add Local Text"></button>
+<BR />
+<input type="button" id="remoteButton" value="Add Remote Text"></button>
+
+<ul id="log">
+  <li>hello world</li>
+</ul>
+<script>
+function append(msg) {
+	console.log('appending:' + msg);
+  $('#log').append($('<li/>').text(msg));
+}
+
+
+function myjsonpfunction(data){
+    $.each(data.responseData.results,function(i,rows){
+        append(rows.url);
+    });
+}
+
+
+
+$(document).on('ready', function(){
+	console.log('ready');
+	$('#localButton').on('click', function(){
+		console.log('click');
+		append($('#box').val())
+	});
+
+    $('#remoteButton').on('click', function(){
+        console.log('remote click!');
+
+        $(function(){
+            $.ajax({
+                url: 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=' + $('#box').val() +'&callback=myjsonpfunction',
+                type:"GET",
+                dataType: 'jsonp',
+                jsonp: 'myjsonpfunction',
+                async:'true',
+                success:function (data) {
+
+                }
+            });
+        });
+
+    });
+
+});
+
+</script>
+<script src="mod.js"></script>
+</body>

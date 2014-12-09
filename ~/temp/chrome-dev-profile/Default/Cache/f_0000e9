@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="y_key" content="9c4b809a854824ce" />
+		<meta name="google-site-verification" content="fkeFoEFB1NiuDjJcYRjHvaz8Od9jVb-RDZFrN4l0Dh4" />
+		<meta http-equiv="imagetoolbar" content="no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="meta-apple-mobile-web-app-status-bar-style" content="white"/>
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="author" content="Krasimir Tsonev" />
+		<meta name="copyright" content="Krasimir Tsonev" />
+		<meta name="robots" content="follow,index" />
+		<meta name="title" content="Chrome extension: debugging dev tools tab or how to make console.log" />
+		<meta name="keywords" content="Chrome extension: debugging dev tools tab or how to make console.log,  freelancer, front-end and back-end developer, web design, responsitive design, html, css, php, javascript, nodejs, action script (as3), flash, flex, photoshop" lang="en-us" />
+		<meta name="description" content="It's really interesting to work on an extension for Chrome. However, sometimes it's a little bit difficult to debug. Especially when you work on a dev tools add-on (i.e. a new tab). / blog of Krasimir Tsonev - front and back-end developer who writes for web technologies" />
+		<meta property="og:site_name" content="krasimirtsonev.com"/>
+		<meta property="fb:app_id" content="495371670514815" />
+		<link rel="icon" type="image/png" href="/main/pics/favicon.jpg">
+         <meta property="og:title" content="Chrome extension: debugging dev tools tab or how to make console.log"/> <meta property="og:description" content="It's really interesting to work on an extension for Chrome. However, sometimes it's a little bit difficult to debug. Especially when you work on a dev tools add-on (i.e. a new tab)."/>
+		
+		<title>Chrome extension: debugging dev tools tab or how to make console.log</title>
+
+        <link rel="stylesheet" href="/blog/css/styles.min.css" />
+        <link rel="author" href="https://plus.google.com/u/0/102456483730254999684">
+		
+	</head>
+<body>
+
+	<nav>
+		<ul>			
+			<li><a href="http://krasimirtsonev.com/blog" title="to blog's home page" class="to_home"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M32 19l-6-6v-9h-4v5l-6-6-16 16v1h4v10h10v-6h4v6h10v-10h4z" fill="#7F7F7F"></path></svg></a></li>			
+			<li><a href="http://twitter.com/KrasimirTsonev" title="Follow me on Twitter" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M32 6.076c-1.177 0.516-2.443 0.875-3.771 1.034 1.355-0.813 2.396-2.099 2.887-3.632-1.269 0.752-2.674 1.299-4.169 1.593-1.198-1.276-2.904-2.073-4.792-2.073-3.626 0-6.565 2.939-6.565 6.565 0 0.515 0.058 1.016 0.17 1.496-5.456-0.274-10.294-2.888-13.532-6.86-0.565 0.97-0.889 2.097-0.889 3.301 0 2.278 1.159 4.287 2.921 5.465-1.076-0.034-2.088-0.329-2.974-0.821-0.001 0.027-0.001 0.055-0.001 0.083 0 3.181 2.263 5.834 5.266 6.437-0.551 0.15-1.131 0.23-1.73 0.23-0.423 0-0.834-0.041-1.235-0.118 0.835 2.608 3.26 4.506 6.133 4.559-2.247 1.761-5.078 2.81-8.154 2.81-0.53 0-1.052-0.031-1.566-0.092 2.905 1.863 6.356 2.95 10.064 2.95 12.076 0 18.679-10.004 18.679-18.68 0-0.285-0.006-0.568-0.019-0.849 1.283-0.926 2.396-2.082 3.276-3.398z" fill="#7F7F7F"></path></svg></a></li>
+			<li><a href="https://github.com/krasimir" title="Check my account in GitHub" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM25.502 25.502c-1.235 1.235-2.672 2.204-4.272 2.881-0.406 0.172-0.819 0.323-1.238 0.453v-2.398c0-1.26-0.432-2.188-1.297-2.781 0.542-0.052 1.039-0.125 1.492-0.219s0.932-0.169 1.438-0.406 0.958-0.388 1.359-0.633 0.786-0.563 1.156-0.953 0.68-0.833 0.93-1.328 0.448-1.089 0.594-1.781 0.219-1.456 0.219-2.289c0-1.615-0.526-2.99-1.578-4.125 0.479-1.25 0.427-2.609-0.156-4.078l-0.391-0.047c-0.271-0.031-0.758 0.083-1.461 0.344s-1.492 0.688-2.367 1.281c-1.24-0.344-2.526-0.516-3.859-0.516-1.344 0-2.625 0.172-3.844 0.516-0.552-0.375-1.075-0.685-1.57-0.93s-0.891-0.411-1.188-0.5-0.573-0.143-0.828-0.164-0.419-0.026-0.492-0.016-0.125 0.021-0.156 0.031c-0.583 1.479-0.635 2.839-0.156 4.078-1.052 1.135-1.578 2.51-1.578 4.125 0 0.833 0.073 1.596 0.219 2.289s0.344 1.286 0.594 1.781 0.56 0.938 0.93 1.328 0.755 0.708 1.156 0.953 0.854 0.456 1.359 0.633 0.984 0.313 1.438 0.406 0.95 0.167 1.492 0.219c-0.854 0.583-1.281 1.51-1.281 2.781v2.445c-0.472-0.14-0.937-0.306-1.394-0.5-1.6-0.677-3.037-1.646-4.272-2.881s-2.204-2.672-2.881-4.272c-0.7-1.655-1.055-3.414-1.055-5.23s0.355-3.575 1.055-5.23c0.677-1.6 1.646-3.037 2.881-4.272s2.672-2.204 4.272-2.881c1.655-0.7 3.415-1.055 5.23-1.055s3.575 0.355 5.23 1.055c1.6 0.677 3.037 1.646 4.272 2.881s2.204 2.672 2.881 4.272c0.7 1.655 1.055 3.415 1.055 5.23s-0.355 3.575-1.055 5.23c-0.677 1.6-1.646 3.037-2.881 4.272z" fill="#7F7F7F"></path></svg></a></li>
+			<li><a href="http://www.facebook.com/profile.php?id=617578836" title="Check my account in Facebook" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M26.667 0h-21.333c-2.933 0-5.334 2.4-5.334 5.334v21.332c0 2.936 2.4 5.334 5.334 5.334l21.333-0c2.934 0 5.333-2.398 5.333-5.334v-21.332c0-2.934-2.399-5.334-5.333-5.334zM27.206 16h-5.206v14h-6v-14h-2.891v-4.58h2.891v-2.975c0-4.042 1.744-6.445 6.496-6.445h5.476v4.955h-4.473c-1.328-0.002-1.492 0.692-1.492 1.985l-0.007 2.48h6l-0.794 4.58z" fill="#7F7F7F"></path></svg></a></li>
+
+			<li class="right"><a href="/#contacts" title="Contacts" class="low-hide">Contacts</a></li>
+			<li class="right"><a href="/#books" title="Books" class="low-hide">Books</a></li>
+			<li class="right"><a href="/#talks" title="Talks" class="low-hide">Talks</a></li>
+			<li class="right"><a href="/#publications" title="Publications" class="low-hide">Publications</a></li>
+			<li class="right"><a href="/" title="About Krasimir Tsonev" class="low-hide">About Krasimir</a></li>
+		</ul>
+	</nav>
+
+	<section class="content">
+		<h1>Chrome extension: debugging dev tools tab or how to make console.log</h1>
+		
+                <div class="article-info-and-social">
+                    <a href="/blog/"><img src="/blog/pics/avatar_100x100.jpg" alt="author: Krasimir Tsonev" class="author-avatar" /></a>
+                    2013-06-18 by Krasimir <br />in <a href="/blog/category/JavaScript" title="JavaScript">JavaScript</a>
+                    <div class="follow-krasimir">
+                        <a href="https://twitter.com/KrasimirTsonev" class="twitter-follow-button" data-show-count="true" data-size="small" data-show-screen-name="false"></a>                        
+                    </div>
+                    <hr />
+                    <span>If you enjoy this, share it!</span>
+                    <div class="share-it">
+                    <a href="https://twitter.com/share?url=http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log&text=Chrome+extension%3A+debugging+dev+tools+tab+or+how+to+make+console.log&via=KrasimirTsonev" target="_blank" title="share in twitter"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM25.195 11.284c0.009 0.203 0.014 0.408 0.014 0.614 0 6.269-4.772 13.499-13.499 13.499-2.679 0-5.173-0.785-7.273-2.132 0.371 0.044 0.749 0.066 1.132 0.066 2.223 0 4.268-0.759 5.892-2.031-2.076-0.038-3.828-1.41-4.432-3.295 0.29 0.055 0.587 0.085 0.893 0.085 0.433 0 0.852-0.058 1.25-0.166-2.17-0.436-3.806-2.354-3.806-4.652 0-0.020 0-0.040 0-0.060 0.64 0.355 1.371 0.569 2.149 0.593-1.273-0.851-2.111-2.303-2.111-3.949 0-0.869 0.234-1.684 0.642-2.385 2.34 2.87 5.836 4.759 9.779 4.957-0.081-0.347-0.123-0.709-0.123-1.081 0-2.62 2.124-4.744 4.744-4.744 1.365 0 2.598 0.576 3.463 1.498 1.081-0.213 2.096-0.608 3.013-1.151-0.354 1.108-1.107 2.038-2.086 2.625 0.96-0.115 1.874-0.37 2.725-0.747-0.636 0.951-1.44 1.787-2.367 2.456z" fill="#7A7A7A"></path></svg></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log" target="_blank" title="share in facebook"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M16 0c8.837 0 16 7.163 16 16 0 8.159-6.107 14.892-14 15.876v-11.876h5.5l0.5-4h-6v-2c0-1.105 0.895-2 2-2h4v-4h-4c-3.314 0-6 2.686-6 6v2h-3v4h3v11.876c-7.893-0.984-14-7.717-14-15.876 0-8.837 7.163-16 16-16z" fill="#7A7A7A"></path></svg></a>
+                    <a href="https://plus.google.com/share?url=http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log" target="_blank" title="share in google+"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M13.656 25.568c0 2.346-1.45 4.2-5.555 4.349-2.406-1.368-4.422-3.342-5.841-5.715 0.74-1.828 3.053-3.22 5.697-3.191 0.751 0.008 1.45 0.129 2.086 0.334 1.747 1.215 3.156 1.974 3.51 3.358 0.066 0.28 0.103 0.569 0.103 0.864zM16 0c-4.623 0-8.787 1.962-11.708 5.097 1.154-0.639 2.517-1.020 3.966-1.020 2.096 0 8.014 0 8.014 0l-1.791 1.879h-2.103c1.484 0.85 2.274 2.601 2.274 4.532 0 1.772-0.982 3.199-2.368 4.283-1.352 1.056-1.609 1.499-1.609 2.398 0 0.767 1.616 1.909 2.359 2.467 2.588 1.941 3.112 3.162 3.112 5.59 0 2.46-2.154 4.91-5.808 5.742 1.761 0.667 3.67 1.033 5.664 1.033 8.837 0 16-7.163 16-16s-7.163-16-16-16zM24 12v4h-2v-4h-4v-2h4v-4h2v4h4v2h-4zM11.43 10.608c0.373 2.837-0.87 4.662-3.029 4.598-2.16-0.065-4.213-2.047-4.586-4.883-0.373-2.837 1.076-5.008 3.235-4.944s4.007 2.392 4.379 5.228zM6.903 20.065c-2.334 0-4.316 0.805-5.714 1.996-0.766-1.869-1.189-3.915-1.189-6.060 0-1.774 0.289-3.48 0.822-5.075 0.23 3.108 2.417 5.506 6.030 5.506 0.266 0 0.524-0.014 0.777-0.032-0.248 0.476-0.426 1.006-0.426 1.562 0 0.937 0.515 1.471 1.152 2.090-0.481 0-0.946 0.013-1.454 0.013z" fill="#7A7A7A"></path></svg></a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log" target="_blank" title="share in linkedin"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M26.625 0h-21.25c-2.956 0-5.375 2.419-5.375 5.375v21.25c0 2.956 2.419 5.375 5.375 5.375h21.25c2.956 0 5.375-2.419 5.375-5.375v-21.25c0-2.956-2.419-5.375-5.375-5.375zM12 26h-4v-14h4v14zM10 10c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2zM26 26h-4v-8c0-1.105-0.895-2-2-2s-2 0.895-2 2v8h-4v-14h4v2.483c0.825-1.133 2.086-2.483 3.5-2.483 2.485 0 4.5 2.239 4.5 5v9z" fill="#7A7A7A"></path></svg></a>
+                    <a href="https://pinterest.com/pin/create/button/?url=&media=http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log&description=" target="_blank" title="share in pinterest"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22" height="22" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16c8.837 0 16-7.163 16-16s-7.163-16-16-16zM17.551 21.379c-1.454-0.113-2.064-0.833-3.203-1.525-0.627 3.287-1.393 6.438-3.661 8.084-0.7-4.968 1.028-8.699 1.83-12.66-1.368-2.303 0.165-6.939 3.051-5.796 3.551 1.405-3.075 8.563 1.373 9.457 4.644 0.933 6.54-8.058 3.661-10.982-4.161-4.222-12.112-0.096-11.135 5.949 0.238 1.478 1.765 1.926 0.61 3.966-2.663-0.59-3.458-2.691-3.356-5.491 0.165-4.584 4.118-7.793 8.084-8.236 5.015-0.561 9.722 1.841 10.372 6.559 0.732 5.325-2.264 11.092-7.627 10.677z" fill="#7A7A7A"></path></svg></a>
+                    </div>
+                </div>
+                <article>
+                
+                It's really interesting to work on an extension for Chrome. However, sometimes it's a little bit difficult to debug. Especially when you work on a dev tools add-on (i.e. a new tab).<br /><br />As you may guess<pre>console.log</pre>doesn't work in the code of your new dev tools tab. Instead of that I used <i>alert</i>. If the thing which you want to see is something primitive, it's easy. Just pass it to <i>alert</i> function. If not you can use <pre>alert(JSON.stringify(obj));</pre>Anyway, using <i>alert</i> is not the coolest thing, mainly because you have to comment those lines or manually remove them. Also, it's a little bit irritating from user experience point of view. What I did is to send a message to the <i>background</i> page. That's in one of my dev tools scripts:<pre><br />// console.log in the background page<br />var bglog = function(obj) {<br />	if(chrome && chrome.runtime) {<br />		chrome.runtime.sendMessage({type: "bglog", obj: obj});<br />	}<br />}<br /></pre>Then in the <i>background</i> page:<pre><br />var onMessageListener = function(message, sender, sendResponse) {<br />    switch(message.type) {<br />        case "bglog":<br />            console.log(message.obj);<br />        break;<br />    }<br />    return true;<br />}<br />chrome.runtime.onMessage.addListener(onMessageListener);<br /></pre>Really simple, but the <i>background</i> script could be easily inspected. Open <i>chrome://extensions</i>, find your extension and you will see:<pre>Inspect views: _generated_background_page.html</pre>Click on that link and a new dev tools will be opened. The console there accepts logs from the <i>background</i> script.
+                
+                </article>
+            
+                <div class="article_teasers">
+                    <div class="similar-posts-title">Did you enjoy this?<br /><small>Be sure to check out the other articles in the same category.</small></div><ul class="similar-posts"><li><a href="http://krasimirtsonev.com/blog/article/JavaScript-challenge-queue-implementation" title="JavaScript challenge: queue implementation"><span class="star"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z" fill="#000000"></path></svg></span>JavaScript challenge: queue implementation</a></li><li><a href="http://krasimirtsonev.com/blog/article/Mastering-the-DOM-access-JavaScript-set-get-value" title="Mastering the DOM access"><span class="star"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z" fill="#000000"></path></svg></span>Mastering the DOM access</a></li><li><a href="http://krasimirtsonev.com/blog/article/Testing-debugging-Facebook-application-unit-testing-test-driven" title="Testing Facebook application"><span class="star"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32"><g id="icomoon-ignore"><line stroke-width="1" x1="" y1="" x2="" y2="" stroke="#449FDB" opacity=""></line></g><path d="M32 12.408l-11.056-1.607-4.944-10.018-4.944 10.018-11.056 1.607 8 7.798-1.889 11.011 9.889-5.199 9.889 5.199-1.889-11.011 8-7.798z" fill="#000000"></path></svg></span>Testing Facebook application</a></li></ul><br />
+                </div>
+            
+                <a name="comments" title="comments"></a>
+                <div class="disqus">
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+                        var disqus_shortname = "blog-for-web-development";
+                        var disqus_identifier = "Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log";
+                        var disqus_url = "http://krasimirtsonev.com/blog/article/Chrome-extension-debugging-dev-tools-tab-or-how-to-make-console-log";
+                        (function() {
+                            var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
+                            dsq.src = "http://" + disqus_shortname + ".disqus.com/embed.js";
+                            (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+                </div>
+            <br class="clear"/>
+	</section>
+
+	<footer>
+		
+		<div class="footer-block">
+			<h4>Contact</h4>
+			<p>
+				email:<br />info (@) krasimirtsonev.com<br />
+				icq: 260541749<br />
+				skype: krasimir.st.tsonev<br />
+				messenger: outsetbg<br />
+				<a href="http://krasimirtsonev.com/files/cv/" title="CV of Krasimir Tsonev" class="external"><i class="icon-file"></i> CV / Resume</a>
+			</p>
+		</div>
+	
+		<div class="footer-block">
+			<h4>Nets</h4>
+			<p>
+				<a href="https://github.com/krasimir" title="GitHub" class="external"><i class="icon-check"></i> Check my account in GitHub</a><br />
+				<a href="http://www.facebook.com/profile.php?id=617578836" title="Krasimir Tsonev on Facebook" class="external"><i class="icon-check"></i> Find me in Facebook</a><br />
+				<a href="http://twitter.com/KrasimirTsonev" title="Krasimir Tsonev on Twitter" class="external"><i class="icon-check"></i> Follow me in Twitter</a><br />
+				<a href="https://coderbits.com/krasimir" title="Follow me on Coderbits" class="top_nav_coderbits" target="_blank"><i class="icon-check"></i> Follow me on Coderbits</a><br />
+				<a href="http://bg.linkedin.com/pub/krasimir-tzonev/6/8b6/67b" title="Krasimir Tsonev on Linked IN" class="external"><i class="icon-check"></i> Follow me in LinkedIN</a><br />
+				<a href="http://digg.com/KrasimirTsonev" title="Krasimir Tsonev on digg" class="external"><i class="icon-check"></i> Follow me in Digg</a><br />
+				<a href="http://www.freelancer.com/users/217240.html" title="Krasimir Tsonev on GetAFreelancer" class="external"><i class="icon-check"></i> My profile in GetAFreelancer</a><br />
+				<a href="http://www.krop.com/krasimir/" title="Krasimir Tsonev on Krop" class="external"><i class="icon-check"></i> Krop</a>
+			</p>
+		</div>
+	
+		<div class="footer-block">
+			<h4>Friends</h4>
+			<p class="footer_contact_info">
+				<a href="http://camplight.net/" title="Camplight.net" class="external"><i class="icon-user"></i> Camplight - a bunch of web specialists</a><br />
+				<a href="http://outlinez.net/" title="Dimitar Tsankov - Web and Graphic designer" class="external"><i class="icon-user"></i> Dimitar Tsankov - Web and Graphic designer</a><br />
+				<a href="http://stefanpetrov.net/" title="Stefan Petrov - PHP programmer, Drupal fan- themes, modules" class="external"><i class="icon-user"></i> Stefan Petrov - PHP programmer, Drupal fan- themes, modules</a><br />
+				<a href="http://webmax.bg/" title="Web design or redesign" class="external"><i class="icon-user"></i>WEBMAX.BG - The exact spot</a>
+			</p>
+		</div>
+
+		<br class="clear" />
+
+	</footer>
+
+	<div class="image"></div>
+
+	<script src="/blog/js/scripts.js" async defer></script>
+	
+	<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-1621908-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+var util  = require('util'),
+    spawn = require('child_process').spawn,
+    blink    = spawn('./start-blink.sh'),
+    devtools = spawn('./start-devtools-http.sh'),
+	sampleweb = spawn('./start-sample-page.sh');
+
+wire(blink);
+wire(devtools);
+wire(sampleweb);
+
+function wire(item){
+	item.stdout.on('data', writeme);
+	item.stderr.on('data', writeme);
+	item.on('exit', writeme);
+}
+
+function writeme(data){
+	console.log(data.toString());
+}
